@@ -190,3 +190,5 @@ Refer to this information related to the codebase:
 - CMS folder grouped at `src/app/(payload)/*`
 - Frontend folder grouped at `src/app/(frontend)/*`
 - UI components `src/components/*`
+- Tailwindcss
+- UI component Shadcn https://ui.shadcn.com/
