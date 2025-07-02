@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/page-header'
-import { ServicesGrid } from '@/components/sections/services-grid'
+import { ServicesGrid } from '@/components/sections/services-grid-new'
 import { ServicesCTA } from '@/components/sections/services-cta'
+import { getServices } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Our Services',
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getServices();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <PageHeader
@@ -20,7 +23,7 @@ export default function ServicesPage() {
         description="Professional solutions tailored to drive your business forward"
       />
       <div className="space-y-16">
-        <ServicesGrid />
+        <ServicesGrid services={services} />
         <ServicesCTA />
       </div>
     </div>

@@ -4,9 +4,17 @@ import React from 'react'
 import './globals.css'
 import { HeroSection } from '@/components/sections/hero-section'
 import { AboutPreview } from '@/components/sections/about-preview'
-import { ServicesPreview } from '@/components/sections/services-preview'
-import { ProjectsPreview } from '@/components/sections/projects-preview'
+import { ServicesPreview } from '@/components/sections/services-preview-new'
+import { ProjectsPreview } from '@/components/sections/projects-preview-new'
 import { ContactCTA } from '@/components/sections/contact-cta'
+import {
+  getServices,
+  getFeaturedProjects
+} from '@/lib/payload'
+
+// No need for ServiceWithStringId interface anymore as we're using the adapter
+
+// Remove ProjectWithStringId interface since we're using the adapter now
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -18,15 +26,19 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
+  // Fetch services and featured projects for the homepage
+  const services = await getServices();
+  const featuredProjects = await getFeaturedProjects();
+
+  // Services and projects are already adapted by the get functions
 
   return (
     <>
       <HeroSection />
       <AboutPreview />
-      <ServicesPreview />
-      <ProjectsPreview />
+      <ServicesPreview services={services} />
+      <ProjectsPreview projects={featuredProjects} />
       <ContactCTA />
-
     </>
   )
 }
