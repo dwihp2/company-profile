@@ -1,9 +1,10 @@
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ExternalLink, Github } from 'lucide-react'
-import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
 import type { Media } from '@/payload-types'
+import { ExternalLink } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface Project {
   id: string
@@ -51,11 +52,10 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
               <Badge className="absolute top-4 right-4">Featured</Badge>
             )}
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
-              <Button size="sm" variant="secondary">
-                <ExternalLink className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="secondary">
-                <Github className="h-4 w-4" />
+              <Button size="sm" variant="secondary" asChild>
+                <Link href={`/projects/${project.slug}`}>
+                  <ExternalLink className="h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </div>

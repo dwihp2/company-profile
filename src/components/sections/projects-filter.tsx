@@ -4,29 +4,37 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
-const categories = [
-  'All Projects',
-  'Web Development',
-  'Mobile Apps',
-  'E-commerce',
-  'Analytics',
-  'Design'
-]
+interface ProjectCategory {
+  id: string
+  name: string
+  slug: string
+  order?: number
+}
 
-export function ProjectsFilter() {
+interface ProjectsFilterProps {
+  categories?: ProjectCategory[]
+}
+
+export function ProjectsFilter({ categories = [] }: ProjectsFilterProps) {
   const [activeCategory, setActiveCategory] = useState('All Projects')
+
+  // Always add "All Projects" as the first option
+  const displayCategories = [
+    { id: 'all', name: 'All Projects', slug: 'all' },
+    ...categories
+  ]
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2 justify-center">
-        {categories.map((category) => (
+        {displayCategories.map((category) => (
           <Button
-            key={category}
-            variant={activeCategory === category ? 'default' : 'outline'}
-            onClick={() => setActiveCategory(category)}
+            key={category.id}
+            variant={activeCategory === category.name ? 'default' : 'outline'}
+            onClick={() => setActiveCategory(category.name)}
             className="rounded-full"
           >
-            {category}
+            {category.name}
           </Button>
         ))}
       </div>
