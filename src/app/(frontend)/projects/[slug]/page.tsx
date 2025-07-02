@@ -17,10 +17,15 @@ interface ProjectPageProps {
 }
 
 export async function generateStaticParams() {
-  const projects = await getAllProjects()
-  return projects.map((project) => ({
-    slug: project.slug,
-  }))
+  try {
+    const projects = await getAllProjects()
+    return projects.map((project) => ({
+      slug: project.slug,
+    }))
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    return [] // Return empty array if database isn't ready
+  }
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {

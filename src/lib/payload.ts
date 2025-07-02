@@ -1,6 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayload, type Payload } from 'payload'
 import type { Project as PayloadProject, ProjectCategory as PayloadProjectCategory, Media as PayloadMedia, Service as PayloadService } from '@/payload-types'
+import { fallbackProjects, fallbackServices, fallbackCategories } from './fallbackData'
 
 // Define RichText interface for components
 interface LexicalNode {
@@ -153,6 +154,14 @@ export const getServices = async (): Promise<Service[]> => {
     return services.docs.map(adaptService)
   } catch (error) {
     console.error('Error fetching services:', error)
+    // Use fallback data during build if database is not available
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+      console.log('Using fallback service data')
+      return fallbackServices.map(service => ({
+        ...service,
+        description: { root: { children: [] } } as RichTextContent
+      } as Service))
+    }
     return []
   }
 }
@@ -184,6 +193,14 @@ export const getProjects = async (featured?: boolean): Promise<Project[]> => {
     return projects.docs.map(adaptProject)
   } catch (error) {
     console.error('Error fetching projects:', error)
+    // Use fallback data during build if database is not available
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+      console.log('Using fallback project data')
+      return fallbackProjects.map(project => ({
+        ...project,
+        description: { root: { children: [] } } as RichTextContent
+      } as Project))
+    }
     return []
   }
 }
@@ -198,6 +215,11 @@ export const getProjectCategories = async (): Promise<ProjectCategory[]> => {
     return categories.docs.map(adaptProjectCategory)
   } catch (error) {
     console.error('Error fetching project categories:', error)
+    // Use fallback data during build if database is not available
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+      console.log('Using fallback category data')
+      return fallbackCategories.map(category => category as ProjectCategory)
+    }
     return []
   }
 }
@@ -254,6 +276,17 @@ export const getProjectBySlug = async (slug: string): Promise<Project | null> =>
     return project.docs[0] ? adaptProject(project.docs[0]) : null
   } catch (error) {
     console.error(`Error fetching project with slug ${slug}:`, error)
+    // Use fallback data during build if database is not available
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+      console.log('Using fallback project data for slug', slug)
+      const fallbackProject = fallbackProjects.find(p => p.slug === slug)
+      if (fallbackProject) {
+        return {
+          ...fallbackProject,
+          description: { root: { children: [] } } as RichTextContent
+        } as Project
+      }
+    }
     return null
   }
 }

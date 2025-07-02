@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     return config;
   },
+  // Disable static generation during database setup
+  staticPageGenerationTimeout: 120,
+  experimental: {
+    // Use some valid experimental flags
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
+  },
 };
 
 export default withPayload(nextConfig);
