@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    services: Service;
+    projects: Project;
+    'project-categories': ProjectCategory;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +80,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'project-categories': ProjectCategoriesSelect<false> | ProjectCategoriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -128,6 +134,13 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
   password?: string | null;
 }
 /**
@@ -151,6 +164,157 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Brief description for preview cards
+   */
+  shortDescription?: string | null;
+  icon?: (number | null) | Media;
+  category: 'development' | 'mobile' | 'strategy' | 'marketing' | 'security' | 'cloud' | 'consulting' | 'design';
+  /**
+   * List of key features for this service
+   */
+  features?:
+    | {
+        feature: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  /**
+   * Uncheck to hide this service from the website
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * URL-friendly version of the title (e.g., ecommerce-platform)
+   */
+  slug: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Brief description for preview cards
+   */
+  shortDescription?: string | null;
+  coverImage?: (number | null) | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * List of technologies, frameworks, or tools used in this project
+   */
+  technologies?:
+    | {
+        technology: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Year when the project was completed
+   */
+  year: number;
+  /**
+   * Check to feature this project on the homepage
+   */
+  featured?: boolean | null;
+  testimonial?: {
+    text?: string | null;
+    author?: string | null;
+    position?: string | null;
+    company?: string | null;
+  };
+  /**
+   * Live project URL (optional)
+   */
+  projectUrl?: string | null;
+  /**
+   * GitHub repository URL (optional)
+   */
+  githubUrl?: string | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  /**
+   * Uncheck to hide this project from the website
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-categories".
+ */
+export interface ProjectCategory {
+  id: number;
+  name: string;
+  /**
+   * URL-friendly version of the name (e.g., web-development)
+   */
+  slug: string;
+  description?: string | null;
+  /**
+   * Color theme for this category
+   */
+  color?: ('blue' | 'green' | 'purple' | 'red' | 'orange' | 'pink' | 'indigo' | 'gray') | null;
+  /**
+   * Lower numbers appear first in filters
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -163,6 +327,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'project-categories';
+        value: number | ProjectCategory;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -220,6 +396,13 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -238,6 +421,80 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  shortDescription?: T;
+  icon?: T;
+  category?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  order?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  shortDescription?: T;
+  coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  technologies?:
+    | T
+    | {
+        technology?: T;
+        id?: T;
+      };
+  year?: T;
+  featured?: T;
+  testimonial?:
+    | T
+    | {
+        text?: T;
+        author?: T;
+        position?: T;
+        company?: T;
+      };
+  projectUrl?: T;
+  githubUrl?: T;
+  order?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-categories_select".
+ */
+export interface ProjectCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  color?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
