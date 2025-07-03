@@ -17,5 +17,8 @@ else
 fi
 
 # Run the build command
+echo "Generating Payload CMS import map..."
+pnpm payload generate:importmap
+
 echo "Building the application..."
 pnpm build
