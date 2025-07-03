@@ -9,6 +9,9 @@ export const ProjectCategories: CollectionConfig = {
   access: {
     read: () => true,
   },
+  versions: {
+    drafts: true,
+  },
   fields: [
     {
       name: 'name',
