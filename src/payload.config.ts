@@ -6,6 +6,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -32,8 +33,8 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
-      ssl: process.env.NODE_ENV === 'production' ? { 
-        rejectUnauthorized: false 
+      ssl: process.env.NODE_ENV === 'production' ? {
+        rejectUnauthorized: false
       } : undefined,
       max: 10,
       idleTimeoutMillis: 30000,
@@ -44,5 +45,13 @@ export default buildConfig({
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.VERCEL_BLOB_STORAGE_TOKEN || '',
+      clientUploads: true,
+    }),
   ],
 })

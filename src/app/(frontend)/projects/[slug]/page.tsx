@@ -144,15 +144,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {project.gallery && project.gallery.length > 0 && (
             <section>
               <h2 className="text-2xl font-semibold mb-6">Project Gallery</h2>
-              <GalleryLightbox 
+              <GalleryLightbox
                 images={project.gallery.map(item => ({
-                  image: typeof item.image === 'object' ? { 
+                  image: typeof item.image === 'object' ? {
                     url: item.image.url || '',
                     alt: item.image.alt || ''
                   } : item.image,
                   caption: item.caption,
                   id: item.id
-                }))} 
+                }))}
               />
             </section>
           )}
