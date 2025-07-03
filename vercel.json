@@ -4,6 +4,7 @@
   "framework": "nextjs",
   "outputDirectory": ".next",
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "PAYLOAD_CONFIG_DISABLE_REMOTE_SSL_VALIDATION": "true"
   }
 }

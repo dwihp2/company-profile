@@ -1,4 +1,8 @@
 #!/bin/bash
+# Configure SSL certificate handling for production database connections
+# This is needed when connecting to databases with self-signed certificates
+export PAYLOAD_CONFIG_DISABLE_REMOTE_SSL_VALIDATION=true
+
 # Check if DATABASE_URI is set
 if [ -z "$DATABASE_URI" ]; then
   echo "WARNING: DATABASE_URI is not set. Building without database connection."
