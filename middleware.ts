@@ -8,7 +8,7 @@ export function middleware() {
   response.headers.set('Cache-Control', 'no-store, max-age=0');
   response.headers.set('CDN-Cache-Control', 'no-store, max-age=0');
   response.headers.set('Vercel-CDN-Cache-Control', 'no-store, max-age=0');
-  
+
   return response;
 }
 
