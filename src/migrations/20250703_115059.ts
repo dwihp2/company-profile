@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_services_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__services_v_version_category" AS ENUM('development', 'mobile', 'strategy', 'marketing', 'security', 'cloud', 'consulting', 'design');
@@ -156,7 +156,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "project_categories__status_idx" ON "project_categories" USING btree ("_status");`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "_services_v_version_features" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "_services_v" DISABLE ROW LEVEL SECURITY;
