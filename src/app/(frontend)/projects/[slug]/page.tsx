@@ -10,6 +10,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { RichText } from '@/components/ui/rich-text'
 import { GalleryLightbox } from '@/components/ui/gallery-lightbox'
 
+// Add export for revalidation timing - 60 seconds is a good starting point
+export const revalidate = 60
+
 interface ProjectPageProps {
   params: Promise<{
     slug: string

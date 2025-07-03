@@ -4,6 +4,9 @@ import { ServicesGrid } from '@/components/sections/services-grid-new'
 import { ServicesCTA } from '@/components/sections/services-cta'
 import { getServices } from '@/lib/payload'
 
+// Add revalidation timing
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Our Services',
   description: 'Explore our comprehensive range of professional services designed to meet your business needs',

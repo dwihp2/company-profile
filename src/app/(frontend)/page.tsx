@@ -12,6 +12,9 @@ import {
   getFeaturedProjects
 } from '@/lib/payload'
 
+// Add revalidation timing
+export const revalidate = 60
+
 // No need for ServiceWithStringId interface anymore as we're using the adapter
 
 // Remove ProjectWithStringId interface since we're using the adapter now

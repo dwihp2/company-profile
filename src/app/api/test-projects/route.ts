@@ -1,5 +1,9 @@
 import { getPayloadClient } from '@/lib/payload'
 
+// Add this to ensure the API is always fresh
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function GET() {
   try {
     const payload = await getPayloadClient()
