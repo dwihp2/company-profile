@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { migrations } from './migrations'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -40,6 +41,7 @@ export default buildConfig({
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
     },
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [

@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:vercel": "NODE_TLS_REJECT_UNAUTHORIZED=0 next build",
+    "build:vercel": "next build",
     "setup:db": "payload migrate:fresh",
-    "setup:build": "npm run setup:db && npm run build:vercel",
+    "setup:build": "npm run setup:db && npm run build",
     "start": "next start",
     "lint": "next lint",
     "generate:types": "payload generate:types",
