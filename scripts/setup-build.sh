@@ -14,6 +14,8 @@ else
   # automatically on server startup in production. Migrations should run on
   # first request, not during build time.
   echo "Database detected. Migrations will run automatically on first request."
+  pnpm payload migrate:status || echo "No pending migrations found."
+  pnpm payload migrate || echo "No migrations to run."
 fi
 
 # Run the build command
