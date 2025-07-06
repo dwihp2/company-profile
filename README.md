@@ -171,21 +171,113 @@ Access the CMS at `/admin` to:
 
 ### Vercel (Recommended)
 
-1. **Connect your repository** to Vercel
-2. **Configure environment variables** in Vercel dashboard
-3. **Deploy** - Vercel will automatically build and deploy
+This project is optimized for Vercel deployment with custom build configurations to handle Payload CMS properly.
+
+#### Prerequisites
+- A PostgreSQL database (Vercel Postgres, Supabase, or similar)
+- A Vercel account
+- Vercel Blob Storage token (for file uploads)
+
+#### Step-by-Step Deployment
+
+1. **Set up your database**
+   - Create a PostgreSQL database (e.g., Vercel Postgres)
+   - Get your `DATABASE_URI` connection string
+
+2. **Connect your repository to Vercel**
+   - Import your repository in Vercel dashboard
+   - Choose "Next.js" as the framework preset
+
+3. **Configure environment variables in Vercel**
+   Go to your project settings in Vercel and add these environment variables:
+   
+   ```bash
+   # Required
+   DATABASE_URI="your-postgresql-connection-string"
+   PAYLOAD_SECRET="your-32-character-secret-key"
+   VERCEL_BLOB_STORAGE_TOKEN="your-vercel-blob-token"
+   
+   # Optional (for Payload Cloud)
+   PAYLOAD_CLOUD_TOKEN="your-payload-cloud-token"
+   PAYLOAD_CLOUD_PROJECT_ID="your-payload-cloud-project-id"
+   ```
+
+4. **Deploy**
+   - Click "Deploy" in Vercel
+   - The custom build script will handle database migrations automatically
+
+#### Environment Variables Setup
+
+**DATABASE_URI**: Your PostgreSQL connection string
+```bash
+# Example for Vercel Postgres
+DATABASE_URI="postgresql://username:password@host:5432/database?sslmode=require"
+```
+
+**PAYLOAD_SECRET**: A secure secret key (minimum 32 characters)
+```bash
+# Generate with: openssl rand -base64 32
+PAYLOAD_SECRET="your-generated-secret-key-here"
+```
+
+**VERCEL_BLOB_STORAGE_TOKEN**: For file uploads
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Navigate to Storage > Blob
+3. Create a new Blob store
+4. Copy the token
+
+#### Troubleshooting Vercel Deployment
+
+**Build fails with "Payload in dev mode" error**:
+- This issue is fixed with the custom build script
+- Ensure all environment variables are set correctly
+- Check that `DATABASE_URI` is properly configured
+
+**Database connection issues**:
+- Verify your database is accessible from Vercel
+- Check that your connection string includes SSL parameters
+- Ensure your database allows connections from Vercel IPs
+
+**File upload issues**:
+- Verify `VERCEL_BLOB_STORAGE_TOKEN` is set
+- Check that your Blob storage is active
 
 ### Manual Deployment
 
-1. **Build the project**
+For other platforms (Railway, Render, etc.):
+
+1. **Set environment variables**
    ```bash
+   DATABASE_URI="your-postgresql-connection-string"
+   PAYLOAD_SECRET="your-32-character-secret-key"
+   NODE_ENV="production"
+   ```
+
+2. **Build the project**
+   ```bash
+   pnpm install
    pnpm build
    ```
 
-2. **Start the production server**
+3. **Start the production server**
    ```bash
    pnpm start
    ```
+
+### Post-Deployment Setup
+
+1. **Access the admin panel**
+   - Navigate to `https://your-domain.vercel.app/admin`
+   - Create your first admin account
+
+2. **Add initial content**
+   - Add services, projects, and media through the CMS
+   - Configure your company information
+
+3. **Test functionality**
+   - Verify all pages load correctly
+   - Test file uploads in the admin
+   - Check that dynamic content displays properly
 
 ## 🤝 Contributing
 

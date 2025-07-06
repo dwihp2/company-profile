@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:vercel": "next build",
+    "build:vercel": "PAYLOAD_CONFIG_DISABLE_REMOTE_SSL_VALIDATION=true next build",
     "setup:db": "payload migrate:fresh",
     "setup:build": "npm run setup:db && npm run build",
     "start": "next start",

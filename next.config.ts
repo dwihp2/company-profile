@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+  // Skip build-time database checks during Vercel builds
+  env: {
+    PAYLOAD_DISABLE_ADMIN: process.env.NODE_ENV === 'production' ? 'false' : 'false',
+  },
 };
 
 export default withPayload(nextConfig);

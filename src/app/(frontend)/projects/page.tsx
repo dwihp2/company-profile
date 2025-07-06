@@ -4,6 +4,9 @@ import { ProjectsFilter } from '@/components/sections/projects-filter'
 import { ProjectsGrid } from '@/components/sections/projects-grid-new'
 import { getAllProjects, getProjectCategories } from '@/lib/payload'
 
+// Add revalidation timing
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Our Projects',
   description: 'Browse our portfolio of successful projects and see how we deliver exceptional results',
